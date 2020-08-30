@@ -16,56 +16,55 @@
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
         <div class="widget-content-area br-4">
-            <div class="widget-one">
-                <?php if (session()->getFlashdata('pesan')) : ?>
-                    <div class="alert alert-primary" role="alert">
-                        <?= session()->getFlashdata('pesan'); ?>
-                    </div>
-                <?php endif; ?>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped mb-4">
-                        <thead>
-                            <tr>
-                                <th colspan="2">Detail Transaksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Tanggal</td>
-                                <td><?= $rekening->date; ?></td>
-                            </tr>
-                            <tr>
-                                <td>Pemasukan</td>
-                                <td><?= $rekening->pemasukan; ?></td>
-                            </tr>
-                            <tr>
-                                <td>Pengeluaran</td>
-                                <td><?= $rekening->pengeluaran; ?></td>
-                            </tr>
-                            <tr>
-                                <td>Keterangan</td>
-                                <td><?= $rekening->keterangan; ?></td>
-                            </tr>
-                            <tr>
-                                <td>Jenis</td>
-                                <td><?= $rekening->jenis; ?></td>
-                            </tr>
-                            <tr>
-                                <td>Last Update</td>
-                                <td><?= $rekening->updated_at;?></td>
-                            </tr>
-                            <tr>
-                                <td>Bukti Transaksi</td>
-                                <td><?php if($rekening->file != NULL):?><img src="/uploads/<?= $rekening->file;?>"><?php else: echo '-'; endif;?></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a href="/rekening/edit/<?= $rekening->id; ?>" class="btn btn-warning">Update Transaksi</a>
-                    <form action="/rekening/<?= $rekening->id; ?>" method="post" class="d-inline">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('apakah yakin akan di delete?');">DELETE</button>
-                    </form>
+            <?php if (session()->getFlashdata('pesan')) : ?>
+                <div class="alert alert-primary" role="alert">
+                    <?= session()->getFlashdata('pesan'); ?>
                 </div>
+            <?php endif; ?>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped mb-4">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Detail Transaksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td><?= $rekening->date; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Pemasukan</td>
+                            <td>Rp <?= number_format($rekening->pemasukan, 2, ",", "."); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Pengeluaran</td>
+                            <td>Rp <?= number_format($rekening->pengeluaran, 2, ",", "."); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Keterangan</td>
+                            <td><?= $rekening->keterangan; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Jenis</td>
+                            <td><?= $rekening->jenis; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Last Update</td>
+                            <td><?= $rekening->updated_at; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Bukti Transaksi</td>
+                            <td><?php if ($rekening->file != NULL) : ?><img src="/uploads/<?= $rekening->file; ?>"><?php else : echo '-';
+                                                                                                                endif; ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="/rekening/edit/<?= $rekening->id; ?>" class="btn btn-warning">Update Transaksi</a>
+                <form action="/rekening/<?= $rekening->id; ?>" method="post" class="d-inline">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('apakah yakin akan di delete?');">DELETE</button>
+                </form>
             </div>
         </div>
     </div>

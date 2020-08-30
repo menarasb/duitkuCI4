@@ -25,6 +25,7 @@
     <link href="<?= base_url('style'); ?>/cork_top/plugins/autocomplete/autocomplete.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="<?= base_url('style'); ?>/cork_top/plugins/table/datatable/datatables.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url('style'); ?>/cork_top/plugins/table/datatable/dt-global_style.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url('style'); ?>/cork_top/assets/css/widgets/modules-widgets.css"> 
     <?= $this->renderSection('custom_css'); ?>
 
     <style>
@@ -273,7 +274,7 @@
                     </li>
 
                     <li class="menu single-menu">
-                        <a href="/" aria-expanded="false" class="dropdown-toggle">
+                        <a href="/tunai" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
                                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -286,6 +287,22 @@
                             </svg>
                         </a>
                     </li>
+
+                    <li class="menu single-menu">
+                        <a href="/summary" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                <span>Summary</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
         </div>
@@ -325,6 +342,8 @@
     <script src="<?= base_url('style'); ?>/cork_top/assets/js/app.js"></script>
     <script src="<?= base_url('style'); ?>/cork_top/plugins/flatpickr/flatpickr.js"></script>
     <script src="<?= base_url('style'); ?>/cork_top/assets/js/scrollspyNav.js"></script>
+    <script src="<?= base_url('style'); ?>/cork_top/plugins/input-mask/jquery.inputmask.bundle.min.js"></script>
+    <script src="<?= base_url('style'); ?>/cork_top/plugins/input-mask/input-mask.js"></script>
     <script type="text/javascript" src="<?= base_url('style'); ?>/cork_top/plugins/DataTables/datatables.min.js"></script>
     <!-- Auto Select Suggestion -->
     <script src="<?= base_url('style'); ?>/cork_top/plugins/autocomplete/jquery.mockjax.js"></script>

@@ -22,14 +22,14 @@ class Rekening extends BaseController
     public function index()
     {
         $this->data['page_title'] = 'Rekening';
-        $this->data['rekening'] = $this->rekeningModel->getRekening();      
+        $this->data['tahun'] = $this->session->get('tahun');   
         return view('rekening/index', $this->data);
     }
 
     public function detail($id)
     {
         $this->data['page_title'] = 'Detail Rekening';
-        $this->data['rekening'] = $this->rekeningModel->getRekening($id)->getRow();    
+        $this->data['rekening'] = $this->rekeningModel->getRekening($id)->getRow();
         // if data not found
         if (empty($this->data['rekening'])) :
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Transaksi tidak ditemukan.');
@@ -47,6 +47,10 @@ class Rekening extends BaseController
     {
         // validation
         if (!$this->validate([
+            'tanggal' => [
+                'rules'  => 'required',
+                'errors' => ['required' => 'Harus diisi cok!.']
+            ],
             'keterangan' => [
                 'rules'  => 'required',
                 'errors' => ['required' => 'Harus diisi cok!.']
@@ -78,20 +82,17 @@ class Rekening extends BaseController
         // simpan ke db rekening
         $this->rekeningModel->save([
             'date' => $this->request->getVar('tanggal'),
-            'pemasukan' => $this->request->getVar('pemasukan'),
-            'pengeluaran' => $this->request->getVar('pengeluaran'),
+            'pemasukan' => str_replace('.','',$this->request->getVar('pemasukan')),
+            'pengeluaran' => str_replace('.','',$this->request->getVar('pengeluaran')),
             'keterangan' => $this->request->getVar('keterangan'),
             'jenis' => $this->request->getVar('jenis'),
             'file' => $namaFile
         ]);
-        // ID yang dimasukan
-        $idRekening = $this->rekeningModel->InsertID();
         // jika jenisnya adalah tarik tunai maka simpan ke table tunai
-        if($this->request->getVar('jenis')=='Tarik Tunai'):
+        if ($this->request->getVar('jenis') == 'Tarik Tunai') :
             $this->tunaiModel->save([
                 'date' => $this->request->getVar('tanggal'),
-                'id_rekening' => $idRekening,
-                'pemasukan' => $this->request->getVar('pengeluaran'),
+                'pemasukan' => str_replace('.','',$this->request->getVar('pengeluaran')),
                 'keterangan' => $this->request->getVar('keterangan'),
                 'jenis' => $this->request->getVar('jenis'),
                 'file' => $namaFile
@@ -131,6 +132,10 @@ class Rekening extends BaseController
     {
         // validation
         if (!$this->validate([
+            'tanggal' => [
+                'rules'  => 'required',
+                'errors' => ['required' => 'Harus diisi cok!.']
+            ],
             'keterangan' => [
                 'rules'  => 'required',
                 'errors' => ['required' => 'Harus diisi cok!.']
@@ -156,7 +161,7 @@ class Rekening extends BaseController
             // get random nama file
             $namaFile = $fileUpload->getRandomName();
             // pindahkan file 
-            $fileUpload->move('uploads' , $namaFile);
+            $fileUpload->move('uploads', $namaFile);
             //cari file berdasarkan id
             $rekening = $this->rekeningModel->find($id);
             if ($rekening['file'] != NULL) :
@@ -168,8 +173,8 @@ class Rekening extends BaseController
         $this->rekeningModel->save([
             'id' => $id,
             'date' => $this->request->getVar('tanggal'),
-            'pemasukan' => $this->request->getVar('pemasukan'),
-            'pengeluaran' => $this->request->getVar('pengeluaran'),
+            'pemasukan' => str_replace('.','',$this->request->getVar('pemasukan')),
+            'pengeluaran' => str_replace('.','',$this->request->getVar('pengeluaran')),
             'keterangan' => $this->request->getVar('keterangan'),
             'jenis' => $this->request->getVar('jenis'),
             'file' => $namaFile
@@ -177,5 +182,33 @@ class Rekening extends BaseController
         session()->setFlashdata('pesan', 'Data Berhasil diubah');
         return redirect()->to('/rekening/' . $id);
     }
+    public function bulan_tahun()
+    {
+        $sesdata = [
+            'bulan'     => $this->request->getVar('bulan'),
+            'tahun'     => $this->request->getVar('tahun')
+        ];
 
+        $this->session->set($sesdata);
+        $this->data = [
+            'bulan' =>  $this->session->get('bulan'),
+            'tahun' =>  $this->session->get('tahun')
+        ];
+        return redirect()->to('/rekening');
+    }
+
+    public function gasBler()
+    {
+        $tahun = $this->session->get('tahun');
+        $bulan = $this->session->get('bulan');
+        $where = [
+            'substr(date,6,2)' => $bulan,
+            'substr(date,1,4)' => $tahun
+        ];
+        $data =  $this->rekeningModel->getWhere($where);
+        foreach ($data->getResult() as $row)
+        {
+            echo $row->pengeluaran;
+        }
+    }
 }

@@ -20,7 +20,6 @@ use App\Models\SettingModel;
 
 class BaseController extends Controller
 {
-
 	/**
 	 * An array of helpers to be loaded automatically upon
 	 * class instantiation. These helpers will be available
@@ -29,7 +28,6 @@ class BaseController extends Controller
 	 * @var array
 	 */
 	protected $helpers = [];
-
 	/**
 	 * Constructor.
 	 */
@@ -37,13 +35,12 @@ class BaseController extends Controller
 	{
 		// Do Not Edit This Line
 		parent::initController($request, $response, $logger);
-
 		//--------------------------------------------------------------------
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
-		session();
+		$this->session = session();
 		$this->settingModel = new SettingModel();
 		$this->data['setting'] = $this->settingModel->getSetting(1);   
 	}

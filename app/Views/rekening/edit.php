@@ -16,60 +16,75 @@
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
         <div class="widget-content-area br-4">
-            <div class="widget-one">
-                <form action="/rekening/update/<?= $rekening->id; ?>" method="post" enctype="multipart/form-data">
-                    <?= csrf_field(); ?>
-                    <input type="hidden" name="id" value="<?= $rekening->id; ?>">
-                    <input type="hidden" name="oldFile" value="<?= $rekening->file;?>">
-                    <div class="form-row mb-4">
-                        <div class="col-xl-4">
-                            <label>Tanggal Transaksi :</label>
-                            <input id="basicFlatpickr" class="form-control flatpickr flatpickr-input active" type="text" placeholder="Select Date.." name="tanggal" value="<?= $rekening->date; ?>">
-                        </div>
-                        <div class="col-xl-4">
-                            <label>Jenis :</label>
-                            <input type="text" class="form-control" name="jenis" value="<?= $rekening->jenis; ?>">
+            <form action="/rekening/update/<?= $rekening->id; ?>" method="post" enctype="multipart/form-data">
+                <?= csrf_field(); ?>
+                <input type="hidden" name="id" value="<?= $rekening->id; ?>">
+                <input type="hidden" name="oldFile" value="<?= $rekening->file; ?>">
+                <div class="form-row mb-4">
+                    <div class="col-xl-4">
+                        <label>Tanggal Transaksi :</label>
+                        <input id="basicFlatpickr" class="form-control flatpickr flatpickr-input <?= ($validation->hasError('tanggal')) ? 'is-invalid' : ''; ?>" type="text" placeholder="Select Date.." name="tanggal" value="<?= $rekening->date; ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('tanggal'); ?>
                         </div>
                     </div>
-                    <div class="form-row mb-4">
-                        <div class="col-xl-4">
-                            <label>Pemasukan :</label>
-                            <input type="text" class="form-control" name="pemasukan" value="<?= $rekening->pemasukan; ?>">
-                        </div>
-                        <div class="col-xl-4">
-                            <label>Pengeluaran</label>
-                            <input type="text" class="form-control" name="pengeluaran" value="<?= $rekening->pengeluaran; ?>">
+                    <div class="col-xl-4">
+                        <label>Jenis :</label>
+                        <input type="text" class="form-control" name="jenis" value="<?= $rekening->jenis; ?>">
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col-xl-4">
+                        <label>Pemasukan :</label>
+                        <input type="text" class="form-control currency" name="pemasukan" value="<?= $rekening->pemasukan; ?>">
+                    </div>
+                    <div class="col-xl-4">
+                        <label>Pengeluaran</label>
+                        <input type="text" class="form-control currency" name="pengeluaran" value="<?= $rekening->pengeluaran; ?>">
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col-xl-8">
+                        <label>Keterangan :</label>
+                        <textarea type="text" class="form-control <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" name="keterangan"><?= $rekening->keterangan; ?></textarea>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('keterangan'); ?>
                         </div>
                     </div>
-                    <div class="form-row mb-4">
-                        <div class="col-xl-8">
-                            <label>Keterangan :</label>
-                            <textarea type="text" class="form-control <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" name="keterangan"><?= $rekening->keterangan; ?></textarea>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col-xl-8">
+                        <label>Upload Bukti Transaksi :</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input <?= ($validation->hasError('file')) ? 'is-invalid' : ''; ?>" id="file" name="file" onchange="previewImg()">
                             <div class="invalid-feedback">
-                                <?= $validation->getError('keterangan'); ?>
+                                <?= $validation->getError('file'); ?>
                             </div>
+                            <label class="custom-file-label" for="customFile"><?php if ($rekening->file != NULL) : echo $rekening->file;
+                                                                                else : echo 'Choose File';
+                                                                                endif; ?></label>
                         </div>
+                        <img <?php if ($rekening->file != NULL) : ?> src="/uploads/<?= $rekening->file; ?>" <?php endif; ?> class="img-thumbnail img-preview">
                     </div>
-                    <div class="form-row mb-4">
-                        <div class="col-xl-8">
-                            <label>Upload Bukti Transaksi :</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input <?= ($validation->hasError('file')) ? 'is-invalid' : ''; ?>" id="file" name="file" onchange="previewImg()">
-                                <div class="invalid-feedback">
-                                    <?= $validation->getError('file'); ?>
-                                </div>
-                                <label class="custom-file-label" for="customFile"><?php if($rekening->file != NULL):echo $rekening->file; else: echo 'Choose File'; endif;?></label>
-                            </div>
-                            <img <?php if($rekening->file != NULL):?> src="/uploads/<?= $rekening->file;?>" <?php endif;?> class="img-thumbnail img-preview">
-                        </div>
-                    </div>
-                    <input type="submit" name="time" class="mb-4 btn btn-primary">
-                </form>
-            </div>
+                </div>
+                <input type="submit" name="time" class="mb-4 btn btn-primary">
+            </form>
         </div>
     </div>
 
 </div>
 
 
+<?= $this->endSection(); ?>
+
+<?= $this->section('custom_js'); ?>
+<script>
+    $('.currency').inputmask({
+        'alias': 'numeric',
+        radixPoint: ',',
+        'groupSeparator': '.',
+        'autoGroup': true,
+        'placeholder': '0.00'
+    });
+</script>
 <?= $this->endSection(); ?>

@@ -31,13 +31,21 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->get('/rekening/create', 'Rekening::create');
 $routes->get('/jenis', 'Jenis::index');
+$routes->get('/rekening/create', 'Rekening::create');
+$routes->get('/rekening/bulan_tahun', 'Rekening::bulan_tahun');
 $routes->get('/table', 'Table::index');
 $routes->get('/rekening/save', 'Rekening::save');
 $routes->get('/rekening/edit/(:num)', 'Rekening::edit/$1');
 $routes->delete('/rekening/(:num)', 'Rekening::delete/$1');
 $routes->get('/rekening/(:any)', 'Rekening::detail/$1');
+$routes->get('/tunai/create', 'Tunai::create');
+$routes->get('/tunai/bulan_tahun', 'Tunai::bulan_tahun');
+$routes->get('/tunai/save', 'Tunai::save');
+$routes->get('/tunai/edit/(:num)', 'Tunai::edit/$1');
+$routes->delete('/tunai/(:num)', 'Tunai::delete/$1');
+$routes->get('/tunai/(:any)', 'Tunai::detail/$1');
+
 
 
 /**

@@ -19,55 +19,56 @@
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
         <div class="widget-content-area br-4">
-            <div class="widget-one">
-                <form action="/rekening/save" method="post" enctype="multipart/form-data">
-                    <?= csrf_field(); ?>
-                    <div class="form-row mb-4">
-                        <div class="col-xl-4">
-                            <label>Tanggal Transaksi :</label>
-                            <input id="basicFlatpickr" class="form-control flatpickr flatpickr-input active" type="text" placeholder="Select Date.." name="tanggal" value="<?= old('tanggal'); ?>">
-                        </div>
-                        <div class="col-xl-4">
-                            <label>Jenis :</label>
-                            <input type="text" name="jenis" class="form-control" id="autocomplete-dynamic">
-                            <!-- <input type="text" class="form-control" name="jenis" value="<?//= old('jenis'); ?>"> -->
+            <form action="/rekening/save" method="post" enctype="multipart/form-data">
+                <?= csrf_field(); ?>
+                <div class="form-row mb-4">
+                    <div class="col-xl-4">
+                        <label>Tanggal Transaksi :</label>
+                        <input id="basicFlatpickr" class="date form-control flatpickr flatpickr-input <?= ($validation->hasError('tanggal')) ? 'is-invalid' : ''; ?>" type="text" placeholder="Select Date.." name="tanggal" value="<?= old('tanggal'); ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('tanggal'); ?>
                         </div>
                     </div>
-                    <div class="form-row mb-4">
-                        <div class="col-xl-4">
-                            <label>Pemasukan :</label>
-                            <input type="text" class="form-control" name="pemasukan" value="<?= old('pemasukan'); ?>">
-                        </div>
-                        <div class="col-xl-4">
-                            <label>Pengeluaran</label>
-                            <input type="text" class="form-control" name="pengeluaran" value="<?= old('pemasukan'); ?>">
+                    <div class="col-xl-4">
+                        <label>Jenis :</label>
+                        <input type="text" name="jenis" class="form-control" id="autocomplete-dynamic">
+                        <!-- <input type="text" class="form-control" name="jenis" value="<?//= old('jenis'); ?>"> -->
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col-xl-4">
+                        <label>Pemasukan :</label>
+                        <input type="text" class="form-control currency" name="pemasukan" value="<?= old('pemasukan'); ?>">
+                    </div>
+                    <div class="col-xl-4">
+                        <label>Pengeluaran</label>
+                        <input type="text" class="form-control currency" name="pengeluaran" value="<?= old('pemasukan'); ?>">
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col-xl-8">
+                        <label>Keterangan :</label>
+                        <textarea type="text" class="form-control <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" name="keterangan"><?= old('keterangan'); ?></textarea>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('keterangan'); ?>
                         </div>
                     </div>
-                    <div class="form-row mb-4">
-                        <div class="col-xl-8">
-                            <label>Keterangan :</label>
-                            <textarea type="text" class="form-control <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" name="keterangan"><?= old('keterangan'); ?></textarea>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col-xl-8">
+                        <label>Upload Bukti Transaksi :</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input <?= ($validation->hasError('file')) ? 'is-invalid' : ''; ?>" id="file" name="file" onchange="previewImg()">
                             <div class="invalid-feedback">
-                                <?= $validation->getError('keterangan'); ?>
+                                <?= $validation->getError('file'); ?>
                             </div>
+                            <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
+                        <img src="" class="img-thumbnail img-preview">
                     </div>
-                    <div class="form-row mb-4">
-                        <div class="col-xl-8">
-                            <label>Upload Bukti Transaksi :</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input <?= ($validation->hasError('file')) ? 'is-invalid' : ''; ?>" id="file" name="file" onchange="previewImg()">
-                                <div class="invalid-feedback">
-                                    <?= $validation->getError('file'); ?>
-                                </div>
-                                <label class="custom-file-label" for="customFile">Choose file</label>
-                            </div>
-                            <img src="" class="img-thumbnail img-preview">
-                        </div>
-                    </div>
-                    <input type="submit" name="time" class="mb-4 btn btn-primary">
-                </form>
-            </div>
+                </div>
+                <input type="submit" name="time" class="mb-4 btn btn-primary">
+            </form>
         </div>
     </div>
 
@@ -77,6 +78,18 @@
 
 <?= $this->endSection(); ?>
 <?= $this->section('custom_js'); ?>
+<script>
+    $('.currency').inputmask({
+        'alias': 'numeric',
+        radixPoint: ',',
+        'groupSeparator': '.',
+        'autoGroup': true,
+        'placeholder': '0.00'
+    });
+</script>
+<script>
+    $('.date').inputmask("9999-99-99");
+</script>
 <script>
     $('#autocomplete-dynamic').autocomplete({
         serviceUrl: '/data/dataJenis',
